@@ -18,7 +18,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function MessageList(props) {
   const [messages, setMessages] = useState([])
-  const {showMessage, setShowMessage, name} = props;
+  const {showMessage, setShowMessage, name, text, host, sendToMessage} = props;
 
   useEffect(() => {
     getMessages();
@@ -92,7 +92,7 @@ export default function MessageList(props) {
           timestamp: new Date().getTime()
         },
       ]
-      setMessages([...messages, ...tempMessages])
+      setMessages([...messages, ...text])
   }
 
   const renderMessages = () => {
@@ -104,7 +104,7 @@ export default function MessageList(props) {
       let previous = messages[i - 1];
       let current = messages[i];
       let next = messages[i + 1];
-      let isMine = current.author === MY_USER_ID;
+      let isMine = current.author === host;
       let currentMoment = moment(current.timestamp);
       let prevBySameAuthor = false;
       let nextBySameAuthor = false;
@@ -172,9 +172,14 @@ export default function MessageList(props) {
 
           <div className="message-list-container">{renderMessages()}</div>
 
-          <Compose rightItems={[
-            <ToolbarButton key="send" icon="ion-ios-send"/>
-          ]}/>
+          <Compose 
+            rightItems={[
+              <ToolbarButton key="send" icon="ion-ios-send"/>
+            ]}
+            sendToMessage={sendToMessage}
+            host={host}
+            name={name}
+          />
           {/* <Compose rightItems={[
             <ToolbarButton key="photo" icon="ion-ios-camera" />,
             <ToolbarButton key="image" icon="ion-ios-image" />,

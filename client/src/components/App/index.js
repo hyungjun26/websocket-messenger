@@ -8,8 +8,8 @@ export default function App() {
     return (
       <div className="App">
         <header className="App-header">
-          <Socket/>
-          {/* <Messenger /> */}
+          {/* <Socket/> */}
+          <Messenger />
           {/* <Route path="/" component={Messenger} exact />
           <Route path="/message" component={MessageList} exact /> */}
         </header>        
