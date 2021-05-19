@@ -1,0 +1,106 @@
+import React, {useState} from 'react'
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import axios from 'axios';
+
+export default function Register({open, setOpen}) {
+    const [userInfo, setUserInfo] = useState({});
+
+    const handleClose = () => {
+        setOpen(false);
+    }
+
+    const handleChange = (e) => {
+        if(e.target.id==='userid'){
+            setUserInfo({
+                ...userInfo,
+                id:e.target.value
+            })
+        }
+        if(e.target.id==='name'){
+            setUserInfo({
+                ...userInfo,
+                name:e.target.value
+            })
+        }
+        if(e.target.id==='pwd'){
+            setUserInfo({
+                ...userInfo,
+                password:e.target.value
+            })
+        }        
+    }
+
+    const handleRegisterNow = () => {
+        console.log(userInfo);
+        axios({
+            method:"post",
+            url:"http://localhost:8000/user/register",
+            data:{
+                id:userInfo.id,
+                name:userInfo.name,
+                password:userInfo.password
+            }
+        })
+        .then((response)=>{
+            console.log(response);
+            if(response.data){
+                if(!alert("등록되었습니다.")){
+                    handleClose();
+                }                
+            } else {
+                alert("이미 사용중인 ID입니다.")
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
+
+    return (
+        <div>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Register</DialogTitle>
+                <DialogContent>                
+                    <TextField
+                        onChange={handleChange}
+                        autoFocus
+                        margin="dense"
+                        id="userid"
+                        label="ID"
+                        type="text"
+                        fullWidth
+                    />
+                    {/* <TextField    
+                        onChange={handleChange}                    
+                        margin="dense"
+                        id="name"
+                        label="Name"
+                        type="text"
+                        fullWidth
+                    /> */}
+                    <TextField    
+                        onChange={handleChange}                    
+                        margin="dense"
+                        id="pwd"
+                        label="Password"
+                        type="password"
+                        fullWidth
+                    />
+                </DialogContent>
+                <DialogActions>                
+                    <Button onClick={handleRegisterNow} color="primary">
+                        Register now
+                    </Button>
+                    <Button onClick={handleClose} color="primary">
+                        Cancel
+                    </Button>
+                </DialogActions>
+            </Dialog>    
+        </div>
+    )
+}
