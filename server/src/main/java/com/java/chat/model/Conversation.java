@@ -5,15 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MessageModel {
-    private String message;
-    private String author;
-    private String to;
-    private Date timestamp;
+public class Conversation {
+    String partner;
+    List<MessageModel> messageList;
 }

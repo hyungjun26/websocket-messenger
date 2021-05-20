@@ -9,6 +9,11 @@ public class UserStorage {
 
     private UserStorage(){
         users = new HashSet<>();
+        users.add("Steve Jobs");
+        users.add("Paul Mccartney");
+        users.add("Ashlyn Pearce");
+        users.add("Eva Green");
+        users.add("Ana de Armas");
     }
 
     public static synchronized UserStorage getInstance(){
