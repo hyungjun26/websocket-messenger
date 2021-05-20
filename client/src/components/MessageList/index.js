@@ -6,104 +6,79 @@ import Message from '../Message';
 import moment from 'moment';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
+//import {useSelector, useDispatch} from 'react-redux';
+//import { insertPartner, insertMessage } from '../../modules/ConversationList'
 
 
 import './MessageList.css';
 
-const MY_USER_ID = 'apple';
+//const MY_USER_ID = 'apple';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function MessageList(props) {
-  const [messages, setMessages] = useState([])
-  const {showMessage, setShowMessage, name, text, host, sendToMessage} = props;
-
+  //const [messages, setMessages] = useState([])
+  //const list = useSelector(state => state.conversationlist);
+  //const dispatch = useDispatch();
+  const {showMessage, setShowMessage, partner, list, host, sendToMessage} = props;
+  const [inputMessage, setInputMessage] = useState();
   useEffect(() => {
-    getMessages();
+    //getMessages();
+    // console.log(list);
   },[])
 
   const handleClose = () => {
     setShowMessage(false);
-    console.log("close");
+    // console.log("close");
   };
   
-  const getMessages = () => {
-     var tempMessages = [
-        {
-          id: 1,
-          author: 'apple',
-          message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-          timestamp: new Date().getTime()
-        },
-        {
-          id: 2,
-          author: 'orange',
-          message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
-          timestamp: new Date().getTime()
-        },
-        {
-          id: 3,
-          author: 'orange',
-          message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-          timestamp: new Date().getTime()
-        },
-        {
-          id: 4,
-          author: 'apple',
-          message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
-          timestamp: new Date().getTime()
-        },
-        {
-          id: 5,
-          author: 'apple',
-          message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-          timestamp: new Date().getTime()
-        },
-        {
-          id: 6,
-          author: 'apple',
-          message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
-          timestamp: new Date().getTime()
-        },
-        {
-          id: 7,
-          author: 'orange',
-          message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-          timestamp: new Date().getTime()
-        },
-        {
-          id: 8,
-          author: 'orange',
-          message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
-          timestamp: new Date().getTime()
-        },
-        {
-          id: 9,
-          author: 'apple',
-          message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-          timestamp: new Date().getTime()
-        },
-        {
-          id: 10,
-          author: 'orange',
-          message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
-          timestamp: new Date().getTime()
-        },
-      ]
-      setMessages([...messages, ...text])
+  // const getMessages = () => {
+  //    var tempMessages = [
+  //       {
+  //         id: 1,
+  //         author: 'apple',
+  //         message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
+  //         timestamp: new Date().getTime()
+  //       },        
+  //     ]
+  //     //setMessages([...messages, ...text])
+  // }
+
+  const sendMessages = () => {
+    // console.log(inputMessage);
+    let temp = [];
+    temp.push({
+      author:host,
+      message:inputMessage
+      //timestamp: new Date().getTime()
+    })
+    //setTextList(text.concat(temp));
+    //setMessages(messages.concat(temp));
+    sendToMessage(host, partner, inputMessage)
   }
+
+  // const receptMessages = () => {
+  //   const input = '상대방 메시지 입니다.'
+  //   let temp = [];
+  //   temp.push({
+  //     author:name,
+  //     message:input,
+  //     timestamp: new Date().getTime()
+  //   })
+  //   setMessages(messages.concat(temp));
+  // }
 
   const renderMessages = () => {
     let i = 0;
-    let messageCount = messages.length;
+    let messageCount = list.length;
     let tempMessages = [];
 
     while (i < messageCount) {
-      let previous = messages[i - 1];
-      let current = messages[i];
-      let next = messages[i + 1];
+      let previous = list[i - 1];
+      let current = list[i];
+      let next = list[i + 1];
       let isMine = current.author === host;
       let currentMoment = moment(current.timestamp);
       let prevBySameAuthor = false;
@@ -158,15 +133,12 @@ export default function MessageList(props) {
       <Dialog fullScreen open={showMessage} TransitionComponent={Transition}>
         <div className="message-list">
           <Toolbar
-            title={name}
+            title={partner}
             leftItems={[
               <ToolbarButton action={handleClose} key="back" icon="ion-ios-arrow-back" />
             ]}
             rightItems={[
-              <ToolbarButton key="exit" icon="ion-md-exit"/>
-              // <ToolbarButton key="info" icon="ion-ios-information-circle-outline" />,
-              // <ToolbarButton key="video" icon="ion-ios-videocam" />,
-              // <ToolbarButton key="phone" icon="ion-ios-call" />
+              <ToolbarButton key="exit" icon="ion-md-exit"/>              
             ]}
           />
 
@@ -174,20 +146,14 @@ export default function MessageList(props) {
 
           <Compose 
             rightItems={[
-              <ToolbarButton key="send" icon="ion-ios-send"/>
+              <ToolbarButton action={sendMessages} key="send" icon="ion-ios-send"/>
             ]}
-            sendToMessage={sendToMessage}
             host={host}
-            name={name}
-          />
-          {/* <Compose rightItems={[
-            <ToolbarButton key="photo" icon="ion-ios-camera" />,
-            <ToolbarButton key="image" icon="ion-ios-image" />,
-            <ToolbarButton key="audio" icon="ion-ios-mic" />,
-            <ToolbarButton key="money" icon="ion-ios-card" />,
-            <ToolbarButton key="games" icon="ion-logo-game-controller-b" />,
-            <ToolbarButton key="emoji" icon="ion-ios-happy" />
-          ]}/> */}
+            name={partner}
+            setInputMessage={setInputMessage}
+            sendMessages={sendMessages}
+            inputMessage={inputMessage}
+          />          
         </div>
       </Dialog>
     );

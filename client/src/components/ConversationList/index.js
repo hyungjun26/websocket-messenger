@@ -6,59 +6,72 @@ import ToolbarButton from '../ToolbarButton';
 import axios from 'axios';
 import Button from '@material-ui/core/Button'
 import SockJsClient from 'react-stomp';
-
-
+import AddPartner from '../AddPartner';
 import './ConversationList.css';
+import {useSelector, useDispatch} from 'react-redux';
+import { insertPartner, insertMessage, receive } from '../../modules/ConversationList'
 
-
-export default function ConversationList({userName}) {
-  const [conversations, setConversations] = useState([]);
+export default function ConversationList({userId}) {
+  const conversationList = useSelector(state => state.conversationlist);
+  // const [conversations, setConversations] = useState([]);
+  const [addPartner, setAddPartner] = useState(false);
   const $websocket = useRef(null); 
   const baseUrl = 'http://localhost:8000/user';
-  const name = 'test user';
-
-  const sendToMessage = (from, to, msg) =>{
-    const m = {message:msg, author:from};
-    $websocket.current.sendMessage("/app/send/"+to, JSON.stringify(m));
-  }
+  let topics = ['/topic/'+userId];
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getConversations()
   },[])
 
- 
  const getConversations = () => {
-    // axios.get('https://randomuser.me/api/?results=20').then(response => {
-    //     console.log(response);
-    //     let newConversations = response.data.results.map(result => {
-    //       return {
-    //         photo: result.picture.large,
-    //         name: `${result.name.first} ${result.name.last}`,
-    //         text: 'Hello world! This is a long message that needs to be truncated.'
-    //       };
-    //     });
-    //     setConversations([...conversations, ...newConversations])
-    // });
-    
     axios({
       method:"get",
-      url:baseUrl+'/fetchAllUsers/'+ name
+      url:baseUrl+'/fetchAllUsers/'+ userId
     })
     .then((response) => {
-      console.log(response);
-      let newConversations = response.data.map(res => {
-        return {
-          photo:"https://randomuser.me/api/portraits/men/12.jpg",
-          name:res.partner,
-          text:[...res.messageList]
-        }
-      })
-      console.log(newConversations);
-      setConversations([...conversations, ...newConversations])
+      for (const key in response.data) {
+        dispatch(insertPartner(
+          {
+            photo:"https://kicolearn.s3.ap-northeast-2.amazonaws.com/items/blank.png",
+            partner: response.data[key].partner,
+            list:[...response.data[key].messageList]
+          }
+        ))
+        // console.log(conversationList);
+      }           
     })
     .catch((error) => {
       
-    })
+    })    
+  }
+  const sendToMessage = (from, to, msg) =>{
+    const m = {message:msg, author:from, to:to, timestamp: new Date().getTime()};
+    $websocket.current.sendMessage("/app/send", JSON.stringify(m));
+    dispatch(insertMessage(m));
+  }
+
+  const recevieMessage = (msg) => {
+    // console.log(msg);
+    dispatch(receive(msg));    
+  }
+  
+  const handleAddPartner = (name)=> {
+    dispatch(insertPartner({
+      photo:"https://kicolearn.s3.ap-northeast-2.amazonaws.com/items/blank.png",
+      partner:name,
+      list:[]
+    }))
+  }
+
+  const handleOpenAddPartner = () => {
+    setAddPartner(true);
+  }
+
+  const handleLogOut = () => {
+    window.localStorage.removeItem("login");
+    window.localStorage.removeItem("userId");
+    window.location.reload();
   }
 
     return (
@@ -66,31 +79,31 @@ export default function ConversationList({userName}) {
         <Toolbar
           title="Messenger"          
           leftItems={[
-            // <ToolbarButton key="cog" icon="ion-ios-cog" />
-            <ToolbarButton key="add" icon="ion-ios-add-circle-outline" />          
+            <ToolbarButton action={handleOpenAddPartner} key="add" icon="ion-ios-add-circle-outline" />          
           ]}
           rightItems={[
-            <Button color="primary">Log out</Button>
+            <Button onClick={handleLogOut} key="out" color="primary">Log out</Button>
           ]}
         />
         <ConversationSearch />
-        {
-          conversations.map(conversation => 
+        { 
+          Object.keys(conversationList).map((key) => 
             <ConversationListItem             
-              key={conversation.name}
-              photo={conversation.photo}
-              name={conversation.name}
-              text={conversation.text}
-              host={name}
+              key={key}
+              //photo={conversation.photo}
+              partner={key}
+              //list={conversationList[key]}
+              host={userId}
               sendToMessage={sendToMessage}
             />
           )
         }
+        <AddPartner userId={userId} open={addPartner} setOpen={setAddPartner} handleAddPartner={handleAddPartner}/>
         <SockJsClient
-          url={baseUrl}
-          topics={['/topics/sendTo', '/topics/template', '/topics/api']}
+          url="http://localhost:8000/chat"
+          topics={topics}
           onMessage={msg => {
-            console.log(msg);
+            recevieMessage(msg);
           }}
           ref={$websocket}
         />

@@ -1,11 +1,17 @@
 import React, {useState} from 'react'
+import {useDispatch, useSelector} from 'react-redux';
 import './LoginForm.css'
 import Register from '../Register'
 import axios from 'axios';
+import { login, userid } from '../../modules/UserData'
 
-export default function LoginForm({userId, setUserId, setLogin}) {
+export default function LoginForm() {
+    const userData = useSelector(state => state.userdata)
     const [openRegister, setOpenRegister] = useState(false);
     const [password, setPassword] = useState("");
+    const [inputId, setInputId] = useState("");
+    
+    const dispatch = useDispatch();
 
     const enterMessanger = () => {
         //setLogin(true);
@@ -13,7 +19,7 @@ export default function LoginForm({userId, setUserId, setLogin}) {
             method:"post",
             url:"http://localhost:8000/user/login",
             data:{
-                id:userId,
+                id:inputId,
                 password:password
             }
         })
@@ -25,9 +31,12 @@ export default function LoginForm({userId, setUserId, setLogin}) {
                 alert("Password를 다시 확인해주세요.")
                 return;
             }
-            window.localStorage.setItem("userId", userId);
+            window.localStorage.setItem("userId", inputId);
             window.localStorage.setItem("login", true);
-            setLogin(true);
+            console.log(userData);
+            dispatch(userid(inputId));
+            dispatch(login(true));
+            console.log(userData);
         })
     }
 
@@ -40,7 +49,7 @@ export default function LoginForm({userId, setUserId, setLogin}) {
     return (
         <div className="form-container">
             <p className="title">Messanger</p>
-            <input className="login-input" onChange={e=>setUserId(e.target.value)} placeholder="ID"/>
+            <input className="login-input" onChange={e=>setInputId(e.target.value)} placeholder="ID"/>
             <input className="login-input" onChange={e=>setPassword(e.target.value)} placeholder="Password" type="password"/>
             <button className="btn-login" onClick={enterMessanger}>Login</button>
             <div className="hr"/>
