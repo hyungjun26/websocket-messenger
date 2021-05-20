@@ -33,9 +33,9 @@ public class MessageController {
     }
 
     @MessageMapping("/send")
-    public void SendToMessage(MessageModel msg) throws Exception {
-        System.out.println(msg.getMessage() + " " + msg.getAuthor());
-        simpMessagingTemplate.convertAndSend("/topic/test user", msg);
+    public void SendToMessage(MessageModel msg){
+        logger.info("{}", msg);
+        simpMessagingTemplate.convertAndSend("/topic/"+msg.getTo() , msg);
     }
 
     @MessageMapping("/Template")
@@ -46,7 +46,7 @@ public class MessageController {
 
     @MessageMapping("/test")
     public void test(SimpMessageHeaderAccessor headerAccessor) {
-        MessageModel temp = new MessageModel("hello","test");
+        //MessageModel temp = new MessageModel("hello","test");
         //logger.info("Init - SessionID : [{}], Message : [{}]", headerAccessor.getUser().getName(),temp);
         //simpMessagingTemplate.convertAndSendToUser(headerAccessor.getUser().getName(),"/queue/message",temp, createHeaders(headerAccessor.getUser().getName()));
 
