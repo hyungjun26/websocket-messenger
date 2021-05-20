@@ -38,3 +38,20 @@
   grid-column-start: 2;
   background: white;
 }
+
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inner-container {
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 350px;
+  height: 250px;
+  border-radius: 30px;
+}

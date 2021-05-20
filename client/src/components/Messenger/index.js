@@ -1,36 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import ConversationList from '../ConversationList';
-//import MessageList from '../MessageList';
+import LoginForm from '../LoginForm';
 import './Messenger.css';
-export default function Messenger(props) {
+import { login, userid } from '../../modules/UserData'
+
+export default function Messenger() {
+  const userData = useSelector(state => state.userdata)
+  // const [userId, setUserId] = useState("");
+  // const [login, setLogin] = useState(false);
+  //const [handleLogin, handleUserId] = useActions([login, userid]);
+  
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    let isLogin = window.localStorage.getItem("login")
+    if(isLogin){
+      dispatch(login(true));
+      dispatch(userid(window.localStorage.getItem("userId")));
+    }
+  },[])
     return (
-      <div className="messenger">
-        {/* <Toolbar
-          title="Messenger"
-          leftItems={[
-            <ToolbarButton key="cog" icon="ion-ios-cog" />
-          ]}
-          rightItems={[
-            <ToolbarButton key="add" icon="ion-ios-add-circle-outline" />
-          ]}
-        /> */}
-
-        {/* <Toolbar
-          title="Conversation Title"
-          rightItems={[
-            <ToolbarButton key="info" icon="ion-ios-information-circle-outline" />,
-            <ToolbarButton key="video" icon="ion-ios-videocam" />,
-            <ToolbarButton key="phone" icon="ion-ios-call" />
-          ]}
-        /> */}
-
-        <div className="scrollable sidebar">
-          <ConversationList />
-        </div>
-
-        {/* <div className="scrollable content">
-          <MessageList />
-      </div> */}
+      <div className="messenger">        
+        {userData.isLogin ? 
+          (<div className="scrollable sidebar">
+            <ConversationList userId={userData.userId}/>
+          </div>):
+          (<div className="login-container">
+            <div className="inner-container">              
+              <LoginForm/>
+            </div>
+          </div>)}        
       </div>
     );
 }
