@@ -13,15 +13,19 @@ export default function AddPartner({open, setOpen, handleAddPartner, userId}) {
         setOpen(false);
     }
     const handleRegisterPartner = () =>{
+        if(partnerId===userId){
+            alert("자신은 추가할수 없습니다.");
+            return;
+        }
         axios({
             method:"get",
             url:"http://localhost:8000/user/search/"+userId+"/"+partnerId
         })
         .then((response)=>{
             if(response.data===101){
-                alert("존재하지 않는 사용자입니다.")
+                alert("존재하지 않는 사용자입니다.");
             } else if(response.data===102){ 
-                alert("이미 추가된 사용자입니다.")
+                alert("이미 추가된 사용자입니다.");
             } else {
                 handleAddPartner(partnerId);
                 handleClose();
