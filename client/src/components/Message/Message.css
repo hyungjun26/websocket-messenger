@@ -63,19 +63,29 @@
   border-bottom-right-radius: 20px;
 }
 
+.timezone {
+  font-size: 0.8em;
+  flex-direction: row;
+  flex-flow: row-reverse;
+}
+
 .message .sendtime {
-  display: flex;
+  font-size: 0.8em;
   color: #999;
-  font-size: 11px;
-  margin: 5px 5px;
+  margin: 8px 5px;
   text-transform: uppercase;
 }
 
-.message.mine .sendtime {
-  display: flex;
+.meesage.mine .sendtime {
+  font-size: 0.8em;
   color: #999;
-  height: 15px;
-  font-size: 11px;
-  margin: 5px 5px;
+  margin: 8px 5px;
+  text-transform: uppercase;
+}
+
+.message.mine.start .sendtime {
+  font-size: 0.8em;
+  color: #999;
+  margin: 12px 5px;
   text-transform: uppercase;
 }
