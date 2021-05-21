@@ -62,3 +62,20 @@
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
 }
+
+.message .sendtime {
+  display: flex;
+  color: #999;
+  font-size: 11px;
+  margin: 5px 5px;
+  text-transform: uppercase;
+}
+
+.message.mine .sendtime {
+  display: flex;
+  color: #999;
+  height: 15px;
+  font-size: 11px;
+  margin: 5px 5px;
+  text-transform: uppercase;
+}
