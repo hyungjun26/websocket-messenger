@@ -31,18 +31,18 @@ export default function Message(props) {
         <div className="bubble-container">
           {
             prevCompare && isMine && 
-            <div className="sendtime">
-              {sendTimestamp}
-            </div>
+            <span className="sendtime">
+              {sendTimestamp} 
+            </span>
           }
           <div className="bubble" title={friendlyTimestamp}>
             { data.message }
           </div>
           {
             prevCompare && !isMine && 
-            <div className="sendtime">
+            <span className="sendtime">
               {sendTimestamp}        
-            </div>
+            </span>
           }          
         </div>
       </div>
