@@ -4,6 +4,7 @@ import Toolbar from '../Toolbar';
 import ToolbarButton from '../ToolbarButton';
 import Message from '../Message';
 import moment from 'moment';
+import 'moment/locale/ko'
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 //import {useSelector, useDispatch} from 'react-redux';
@@ -71,6 +72,7 @@ export default function MessageList(props) {
   // }
 
   const renderMessages = () => {
+    moment.locale('ko');
     let i = 0;
     let messageCount = list.length;
     let tempMessages = [];
@@ -86,6 +88,7 @@ export default function MessageList(props) {
       let startsSequence = true;
       let endsSequence = true;
       let showTimestamp = true;
+      let prevCompare = true;
 
       if (previous) {
         let previousMoment = moment(previous.timestamp);
@@ -96,9 +99,21 @@ export default function MessageList(props) {
           startsSequence = false;
         }
 
-        if (previousDuration.as('hours') < 1) {
+        // if (previousDuration.as('day') < 1) {
+        //   showTimestamp = false;
+        // }         
+        
+        const prevDateParts = previousMoment._d;
+        const currentDateParts = currentMoment._d;
+        // console.log(previousMoment);
+        // console.log(currentDateParts);
+        //console.log(prevDateParts[0]+" "+ currentDateParts[0] +" "+ prevDateParts[1] +" "+ currentDateParts[1] +" "+ prevDateParts[2] +" "+ currentDateParts[2]);
+        // console.log(previousMoment);
+        if(prevDateParts.getYear() === currentDateParts.getYear() && prevDateParts.getMonth() === currentDateParts.getMonth() && prevDateParts.getDay() === currentDateParts.getDay()){
           showTimestamp = false;
+          console.log(false);
         }
+          
       }
 
       if (next) {
@@ -108,7 +123,14 @@ export default function MessageList(props) {
 
         if (nextBySameAuthor && nextDuration.as('hours') < 1) {
           endsSequence = false;
-        }
+        }        
+        const currentDateParts = currentMoment._d;
+        const nextDateParts = nextMoment._d;
+        if(currentDateParts.getYear() === nextDateParts.getYear() && currentDateParts.getMonth() === nextDateParts.getMonth() 
+        && currentDateParts.getDay() === nextDateParts.getDay() && currentDateParts.getHours() === nextDateParts.getHours() && currentDateParts.getMinutes() === nextDateParts.getMinutes()){
+            prevCompare = false;
+          }
+        
       }
 
       tempMessages.push(
@@ -119,6 +141,7 @@ export default function MessageList(props) {
           endsSequence={endsSequence}
           showTimestamp={showTimestamp}
           data={current}
+          prevCompare={prevCompare}
         />
       );
 

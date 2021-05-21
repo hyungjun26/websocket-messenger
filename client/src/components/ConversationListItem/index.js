@@ -17,7 +17,7 @@ export default function ConversationListItem ({ partner, host, sendToMessage}){
   })  
   const openMessage = () =>{
     setShowMessage(true);
-    console.log(partner);
+    // console.log(partner);
   }
   return (
     <div>

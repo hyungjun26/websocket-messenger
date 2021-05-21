@@ -8,10 +8,12 @@ export default function Message(props) {
       isMine,
       startsSequence,
       endsSequence,
-      showTimestamp
+      showTimestamp,
+      prevCompare
     } = props;
 
-    const friendlyTimestamp = moment(data.timestamp).format('LLLL');
+    const friendlyTimestamp = moment(data.timestamp).format('LL') + ' ' +moment(data.timestamp).format('dddd');
+    const sendTimestamp = moment(data.timestamp).format('LT')
     return (
       <div className={[
         'message',
@@ -27,9 +29,21 @@ export default function Message(props) {
         }
 
         <div className="bubble-container">
+          {
+            prevCompare && isMine && 
+            <div className="sendtime">
+              {sendTimestamp}
+            </div>
+          }
           <div className="bubble" title={friendlyTimestamp}>
             { data.message }
           </div>
+          {
+            prevCompare && !isMine && 
+            <div className="sendtime">
+              {sendTimestamp}        
+            </div>
+          }          
         </div>
       </div>
     );
