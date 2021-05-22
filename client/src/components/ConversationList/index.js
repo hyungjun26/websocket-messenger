@@ -16,7 +16,6 @@ export default function ConversationList({userId}) {
   // const [conversations, setConversations] = useState([]);
   const [addPartner, setAddPartner] = useState(false);
   const $websocket = useRef(null); 
-  const baseUrl = 'http://localhost:8000/user';
   let topics = ['/topic/'+userId];
   const dispatch = useDispatch();
 
@@ -27,18 +26,17 @@ export default function ConversationList({userId}) {
  const getConversations = () => {
     axios({
       method:"get",
-      url:baseUrl+'/fetchAllUsers/'+ userId
+      url:process.env.REACT_APP_USER_BASE_URL+'/fetchAllUsers/'+ userId
     })
     .then((response) => {
       for (const key in response.data) {
         dispatch(insertPartner(
           {
-            photo:"https://kicolearn.s3.ap-northeast-2.amazonaws.com/items/blank.png",
+            photo:process.env.REACT_APP_USER_BASE_IMAGE,
             partner: response.data[key].partner,
             list:[...response.data[key].messageList]
           }
         ))
-        // console.log(conversationList);
       }           
     })
     .catch((error) => {
@@ -52,13 +50,12 @@ export default function ConversationList({userId}) {
   }
 
   const recevieMessage = (msg) => {
-    // console.log(msg);
     dispatch(receive(msg));    
   }
   
   const handleAddPartner = (name)=> {
     dispatch(insertPartner({
-      photo:"https://kicolearn.s3.ap-northeast-2.amazonaws.com/items/blank.png",
+      photo:process.env.REACT_APP_USER_BASE_IMAGE,
       partner:name,
       list:[]
     }))
@@ -69,8 +66,8 @@ export default function ConversationList({userId}) {
   }
 
   const handleLogOut = () => {
-    window.localStorage.removeItem("login");
-    window.localStorage.removeItem("userId");
+    window.sessionStorage.removeItem("login");
+    window.sessionStorage.removeItem("userId");
     window.location.reload();
   }
 
@@ -100,7 +97,7 @@ export default function ConversationList({userId}) {
         }
         <AddPartner userId={userId} open={addPartner} setOpen={setAddPartner} handleAddPartner={handleAddPartner}/>
         <SockJsClient
-          url="http://localhost:8000/chat"
+          url={process.env.REACT_APP_CHAT_BASE_URL}
           topics={topics}
           onMessage={msg => {
             recevieMessage(msg);

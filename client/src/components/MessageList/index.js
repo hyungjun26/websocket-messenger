@@ -26,51 +26,15 @@ export default function MessageList(props) {
   const {showMessage, setShowMessage, partner, list, host, sendToMessage} = props;
   const [inputMessage, setInputMessage] = useState();
   useEffect(() => {
-    //getMessages();
-    // console.log(list);
   },[])
 
   const handleClose = () => {
     setShowMessage(false);
-    // console.log("close");
-  };
-  
-  // const getMessages = () => {
-  //    var tempMessages = [
-  //       {
-  //         id: 1,
-  //         author: 'apple',
-  //         message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-  //         timestamp: new Date().getTime()
-  //       },        
-  //     ]
-  //     //setMessages([...messages, ...text])
-  // }
+  };  
 
   const sendMessages = () => {
-    // console.log(inputMessage);
-    let temp = [];
-    temp.push({
-      author:host,
-      message:inputMessage
-      //timestamp: new Date().getTime()
-    })
-    //setTextList(text.concat(temp));
-    //setMessages(messages.concat(temp));
     sendToMessage(host, partner, inputMessage)
   }
-
-  // const receptMessages = () => {
-  //   const input = '상대방 메시지 입니다.'
-  //   let temp = [];
-  //   temp.push({
-  //     author:name,
-  //     message:input,
-  //     timestamp: new Date().getTime()
-  //   })
-  //   setMessages(messages.concat(temp));
-  // }
-
   const renderMessages = () => {
     moment.locale('ko');
     let i = 0;

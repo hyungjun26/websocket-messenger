@@ -7,17 +7,13 @@ import { login, userid } from '../../modules/UserData'
 
 export default function Messenger() {
   const userData = useSelector(state => state.userdata)
-  // const [userId, setUserId] = useState("");
-  // const [login, setLogin] = useState(false);
-  //const [handleLogin, handleUserId] = useActions([login, userid]);
-  
   const dispatch = useDispatch();
 
   useEffect(()=>{
-    let isLogin = window.localStorage.getItem("login")
+    let isLogin = window.sessionStorage.getItem("login")
     if(isLogin){
       dispatch(login(true));
-      dispatch(userid(window.localStorage.getItem("userId")));
+      dispatch(userid(window.sessionStorage.getItem("userId")));
     }
   },[])
     return (
