@@ -37,3 +37,7 @@ java -jar store-0.0.1-SNAPSHOT.jar
 * 대화상대 추가
 
 ![대화상대추가](https://user-images.githubusercontent.com/53934834/119177520-62832a00-baa7-11eb-8586-d206ffcdbc45.gif)
+
+* 실시간 대화
+
+![실시간대화](https://user-images.githubusercontent.com/53934834/119217566-099eaa80-bb16-11eb-8668-76f72f1eb316.gif)
