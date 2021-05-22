@@ -9,12 +9,18 @@
 - [실행화면](#실행화면)
 
 ## 설명
-* 실시간 대화가 가능한 메신저를 Spring websocket을 이용하여 구현하였습니다.
+* 실시간 대화가 가능한 메신저를 구현.
+  React로 웹 메신저 클라이언트를 구성하고 클라이언트에서 메시지를 전송하면
+  Springboot의 웹소켓을 통해 상대방에게 메시지를 전달.
+  Redis를 통해 사용자와 대화내용 저장.
 
 ## 기술스택
 * Java, Springboot, Websocket, Redis, React
 
 ## 실행
+
+📣Demo version🚀 : http://spurdev.s3-website.ap-northeast-2.amazonaws.com/
+
 1. repo clone
 ```
 git clone https://github.com/hyungjun26/websocket-messenger.git
