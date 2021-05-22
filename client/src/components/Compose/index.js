@@ -7,7 +7,6 @@ export default function Compose(props) {
   
 
   const onChange = (e) => {
-    console.log(e.target.value);
     setInputMessage(e.target.value);
   }
 

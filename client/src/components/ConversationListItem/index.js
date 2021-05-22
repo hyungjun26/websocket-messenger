@@ -10,14 +10,13 @@ export default function ConversationListItem ({ partner, host, sendToMessage}){
   const [showMessage, setShowMessage] = useState(false);  
   const conversationList = useSelector(state => state.conversationlist);
   //const dispatch = useDispatch();
-  const baseImg = "https://kicolearn.s3.ap-northeast-2.amazonaws.com/items/blank.png";
+  const baseImg = process.env.REACT_APP_USER_BASE_IMAGE;
   // const [textList, setTextList] = useState(text);  
   useEffect(() => {
     shave('.conversation-snippet', 20);    
   })  
   const openMessage = () =>{
     setShowMessage(true);
-    // console.log(partner);
   }
   return (
     <div>

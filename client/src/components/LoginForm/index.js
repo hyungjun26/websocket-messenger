@@ -1,12 +1,11 @@
 import React, {useState} from 'react'
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import './LoginForm.css'
 import Register from '../Register'
 import axios from 'axios';
 import { login, userid } from '../../modules/UserData'
 
 export default function LoginForm() {
-    const userData = useSelector(state => state.userdata)
     const [openRegister, setOpenRegister] = useState(false);
     const [password, setPassword] = useState("");
     const [inputId, setInputId] = useState("");
@@ -17,7 +16,7 @@ export default function LoginForm() {
         //setLogin(true);
         axios({
             method:"post",
-            url:"http://localhost:8000/user/login",
+            url: process.env.REACT_APP_USER_BASE_URL + "/login",
             data:{
                 id:inputId,
                 password:password
@@ -31,12 +30,10 @@ export default function LoginForm() {
                 alert("Password를 다시 확인해주세요.")
                 return;
             }
-            window.localStorage.setItem("userId", inputId);
-            window.localStorage.setItem("login", true);
-            console.log(userData);
+            window.sessionStorage.setItem("userId", inputId);
+            window.sessionStorage.setItem("login", true);
             dispatch(userid(inputId));
             dispatch(login(true));
-            console.log(userData);
         })
     }
 

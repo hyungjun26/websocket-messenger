@@ -19,7 +19,7 @@ export default function AddPartner({open, setOpen, handleAddPartner, userId}) {
         }
         axios({
             method:"get",
-            url:"http://localhost:8000/user/search/"+userId+"/"+partnerId
+            url: process.env.REACT_APP_USER_BASE_URL + "/search/"+userId+"/"+partnerId
         })
         .then((response)=>{
             if(response.data===101){

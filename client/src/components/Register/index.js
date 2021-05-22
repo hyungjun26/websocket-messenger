@@ -8,6 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
 
 export default function Register({open, setOpen}) {
+    
     const [userInfo, setUserInfo] = useState({});
 
     const handleClose = () => {
@@ -36,10 +37,9 @@ export default function Register({open, setOpen}) {
     }
 
     const handleRegisterNow = () => {
-        console.log(userInfo);
         axios({
             method:"post",
-            url:"http://localhost:8000/user/register",
+            url:process.env.REACT_APP_USER_BASE_URL+"/register",
             data:{
                 id:userInfo.id,
                 name:userInfo.name,
@@ -47,7 +47,6 @@ export default function Register({open, setOpen}) {
             }
         })
         .then((response)=>{
-            console.log(response);
             if(response.data){
                 if(!alert("등록되었습니다.")){
                     handleClose();
@@ -57,7 +56,6 @@ export default function Register({open, setOpen}) {
             }
         })
         .catch((error) => {
-            console.log(error);
         })
     }
 
