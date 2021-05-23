@@ -24,7 +24,7 @@ export default function MessageList(props) {
   //const list = useSelector(state => state.conversationlist);
   //const dispatch = useDispatch();
   const {showMessage, setShowMessage, partner, list, host, sendToMessage} = props;
-  const [inputMessage, setInputMessage] = useState();
+  const [inputMessage, setInputMessage] = useState("");
   useEffect(() => {
   },[])
 
@@ -33,6 +33,7 @@ export default function MessageList(props) {
   };  
 
   const sendMessages = () => {
+    if(inputMessage.length===0 || inputMessage===undefined)return;
     sendToMessage(host, partner, inputMessage)
   }
   const renderMessages = () => {

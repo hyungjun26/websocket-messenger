@@ -15,6 +15,7 @@ export default function Compose(props) {
   }
 
   const handleKeyPress = (e) => {
+    if(inputMessage.length===0 || inputMessage===undefined)return;
     if(e.key === 'Enter'){
       sendMessages();
       onReset();
