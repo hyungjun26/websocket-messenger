@@ -45,7 +45,7 @@ export default function LoginForm() {
 
     return (
         <div className="form-container">
-            <p className="title">Messanger</p>
+            <p className="title">Messenger</p>
             <input className="login-input" onChange={e=>setInputId(e.target.value)} placeholder="ID"/>
             <input className="login-input" onChange={e=>setPassword(e.target.value)} placeholder="Password" type="password"/>
             <button className="btn-login" onClick={enterMessanger}>Login</button>

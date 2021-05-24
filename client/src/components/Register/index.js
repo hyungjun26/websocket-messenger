@@ -9,7 +9,11 @@ import axios from 'axios';
 
 export default function Register({open, setOpen}) {
     
-    const [userInfo, setUserInfo] = useState({});
+    const [userInfo, setUserInfo] = useState({
+        id:"",
+        name:"",
+        password:""
+    });
 
     const handleClose = () => {
         setOpen(false);
@@ -37,6 +41,18 @@ export default function Register({open, setOpen}) {
     }
 
     const handleRegisterNow = () => {
+        if(userInfo.id.length===0){
+            alert("ID를 입력해주세요.");
+            return;
+        }
+        // if(userInfo.name.length===0){
+        //     alert("이름을 입력해주세요.");
+        //     return;
+        // }
+        if(userInfo.password.length===0){
+            alert("Password를 입력해주세요.");
+            return;
+        }
         axios({
             method:"post",
             url:process.env.REACT_APP_USER_BASE_URL+"/register",
@@ -73,14 +89,6 @@ export default function Register({open, setOpen}) {
                         type="text"
                         fullWidth
                     />
-                    {/* <TextField    
-                        onChange={handleChange}                    
-                        margin="dense"
-                        id="name"
-                        label="Name"
-                        type="text"
-                        fullWidth
-                    /> */}
                     <TextField    
                         onChange={handleChange}                    
                         margin="dense"
