@@ -35,6 +35,7 @@ export default function MessageList(props) {
   const sendMessages = () => {
     if(inputMessage.length===0 || inputMessage===undefined)return;
     sendToMessage(host, partner, inputMessage)
+    setInputMessage("")
   }
   const renderMessages = () => {
     moment.locale('ko');

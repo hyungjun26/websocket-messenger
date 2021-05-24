@@ -9,16 +9,11 @@ export default function Compose(props) {
   const onChange = (e) => {
     setInputMessage(e.target.value);
   }
-
-  const onReset = () => {
-    setInputMessage("");
-  }
-
+  
   const handleKeyPress = (e) => {
     if(inputMessage.length===0 || inputMessage===undefined)return;
     if(e.key === 'Enter'){
       sendMessages();
-      onReset();
     }
   }
     return (
