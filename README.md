@@ -34,19 +34,30 @@
 
 📣Demo version🚀 : http://spurdev.s3-website.ap-northeast-2.amazonaws.com/
 
-1. repo clone
+1. Server
+- repo clone
 ```
 git clone https://github.com/hyungjun26/websocket-messenger.git
 ```
-2. build
+- build
 ```
 cd websocket-messenger/server
 ./gradlew build
 ```
-3. jar 실행
+- jar 실행
 ```
 cd build/libs
 java -jar store-0.0.1-SNAPSHOT.jar
+```
+
+2. Client
+- build or start
+```
+// build
+yarn build
+
+// start
+yarn start
 ```
 ## 실행화면
 * 등록 & 로그인
