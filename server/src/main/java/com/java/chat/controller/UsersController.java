@@ -76,4 +76,12 @@ public class UsersController {
         vop.set(user.getId()+":info",user);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
+
+    @DeleteMapping("/leaveChat")
+    public ResponseEntity<Boolean> leaveChat(@RequestBody MessageModel messageModel){
+        HashOperations<String, String, Conversation> hashOperations = conversationTemplate.opsForHash();
+        logger.info("Leave chat host: {} , partner: {}", messageModel.getAuthor(),messageModel.getTo());
+        hashOperations.delete(messageModel.getAuthor(), messageModel.getTo());
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
 }
