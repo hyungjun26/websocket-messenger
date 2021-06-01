@@ -23,14 +23,18 @@ export default function MessageList(props) {
   //const [messages, setMessages] = useState([])
   //const list = useSelector(state => state.conversationlist);
   //const dispatch = useDispatch();
-  const {showMessage, setShowMessage, partner, list, host, sendToMessage} = props;
+  const {showMessage, setShowMessage, partner, list, host, sendToMessage, handleLeaveChat} = props;
   const [inputMessage, setInputMessage] = useState("");
   useEffect(() => {
   },[])
 
   const handleClose = () => {
     setShowMessage(false);
-  };  
+  };    
+
+  const handleExit = () => {
+    handleLeaveChat(partner);    
+  }
 
   const sendMessages = () => {
     if(inputMessage.length===0 || inputMessage===undefined)return;
@@ -124,7 +128,7 @@ export default function MessageList(props) {
               <ToolbarButton action={handleClose} key="back" icon="ion-ios-arrow-back" />
             ]}
             rightItems={[
-              <ToolbarButton key="exit" icon="ion-md-exit"/>              
+              <ToolbarButton action={handleExit} key="exit" icon="ion-md-exit"/>              
             ]}
           />
 
