@@ -1,10 +1,13 @@
 const NEWPARTNER = 'conversationlist/NEWPARTNER';
 const NEWMESSAGE = 'conversationlist/NEWMESSAGE';
 const RECEIVED = 'conversationlist/RECEIVED';
+const LEAVECHAT = 'conversationlist/LEAVECHAT'
 
 export const insertPartner = (partner) => ({type:NEWPARTNER, payload:partner});
 export const insertMessage = (msg) => ({type:NEWMESSAGE, payload:msg});
 export const receive = (msg) => ({type:RECEIVED, payload:msg});
+export const leaveChat = (partner) => ({type:LEAVECHAT, payload:partner})
+
 
 const initialState = [];
 
@@ -21,8 +24,10 @@ const ConversationList = (state=initialState, action) => {
                 state[action.payload.author] = [action.payload];
             } else {
                 state[action.payload.author] = [...state[action.payload.author], action.payload];
-            }
-            
+            }            
+            return {...state};
+        case LEAVECHAT:
+            delete state[action.payload];
             return {...state};
         default:
             return state;
